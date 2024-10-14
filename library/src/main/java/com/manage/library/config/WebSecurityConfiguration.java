@@ -34,6 +34,9 @@ public class WebSecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
         http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(request ->
                         request
+                                .requestMatchers("/v3/api-docs/**",
+                                        "/swagger-resources/**","/swagger-ui/**")
+                                .permitAll()
                                 .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
 //                        .anyRequest().hasAnyAuthority(Role.ADMIN.name())

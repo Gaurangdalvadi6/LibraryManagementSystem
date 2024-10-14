@@ -24,6 +24,7 @@ public class AdminController {
 
     @GetMapping("/get-books")
     public ResponseEntity<List<BookDto>> getBooks() {
+        System.out.println("Request is hitted in controller");
         return ResponseEntity.ok(adminService.getBooks());
     }
 
