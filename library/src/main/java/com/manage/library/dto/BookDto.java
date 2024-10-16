@@ -28,7 +28,8 @@ public class BookDto {
 
     private String status; // AVAILABLE, ISSUED, LOST, DAMAGED
 
-    private String borrowerUsername;
+//    private String borrowerUsername;
+    private Long borrowerId;
 
     private String issuedDate;
 

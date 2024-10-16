@@ -26,8 +26,15 @@ public class LibrarianService {
     public List<BookDto> getBooks() {
         return bookRepository.findAll().stream()
                 .map(book -> BookDto.builder()
+                        .id(book.getId())
                         .title(book.getTitle())
                         .author(book.getAuthor())
+                        .isbn(book.getIsbn())
+                        .publicationDate(book.getPublicationDate())
+                        .status(book.getStatus().name())
+                        .borrowerId(book.getBorrower() != null && book.getBorrower().getId() != null ? book.getBorrower().getId() : null)
+                        .issuedDate(book.getIssuedDate())
+                        .returnDate(book.getReturnDate())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -36,9 +43,8 @@ public class LibrarianService {
         Book book = bookRepository.findById(bookDto.getId()).orElseThrow();
         Borrower borrower = borrowerRepository.findById(book.getBorrower().getId()).orElseThrow();
 
-        if (book.getStatus() == BookStatus.AVAILABLE) {
+        if (book.getStatus() == BookStatus.PENDING) {
             book.setBorrower(borrower);
-            book.setStatus(BookStatus.ISSUED);
             book.setStatus(BookStatus.ISSUED);
             DateTimeFormatter dt = DateTimeFormatter.ofPattern("dd-mm-yyyy");
             book.setIssuedDate(LocalDateTime.now().format(dt));

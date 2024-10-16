@@ -36,8 +36,7 @@ public class Book implements Serializable {
     @Enumerated(EnumType.STRING)
     private BookStatus status; // AVAILABLE, ISSUED, LOST, DAMAGED
 
-    @ManyToOne
-    @JoinColumn(name = "borrower_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Borrower borrower;
 
     private String issuedDate;

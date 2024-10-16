@@ -4,13 +4,17 @@ import com.manage.library.dto.BookDto;
 import com.manage.library.entity.Book;
 import com.manage.library.entity.BookStatus;
 import com.manage.library.entity.Borrower;
+import com.manage.library.repository.BorrowerRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class BookMapper {
+
+    private BorrowerRepository borrowerRepository;
 
     public BookDto toDto(Book book) {
         return BookDto.builder()
@@ -20,7 +24,7 @@ public class BookMapper {
                 .isbn(book.getIsbn())
                 .publicationDate(book.getPublicationDate())
                 .status(String.valueOf(book.getStatus()))
-                .borrowerUsername(book.getBorrower() != null ? book.getBorrower().getUsername() : null)
+                .borrowerId(book.getBorrower() != null ? book.getBorrower().getId() : null)
                 .issuedDate(book.getIssuedDate())
                 .returnDate(book.getReturnDate())
                 .build();
@@ -34,9 +38,10 @@ public class BookMapper {
         book.setIsbn(bookDto.getIsbn());
         book.setPublicationDate(bookDto.getPublicationDate());
         book.setStatus(BookStatus.valueOf(bookDto.getStatus()));
-        if (bookDto.getBorrowerUsername() != null) {
+        if (bookDto.getBorrowerId() != null) {
             Borrower borrower = new Borrower();
-            borrower.setUsername(bookDto.getBorrowerUsername());
+            Optional<Borrower> optionalBorrower = borrowerRepository.findById(bookDto.getBorrowerId());
+            borrower.setUsername(optionalBorrower.get().getUsername());
             book.setBorrower(borrower);
         }
         book.setIssuedDate(bookDto.getIssuedDate());

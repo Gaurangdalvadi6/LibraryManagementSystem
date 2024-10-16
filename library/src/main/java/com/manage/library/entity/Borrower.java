@@ -33,9 +33,13 @@ public class Borrower implements Serializable {
     @Email
     private String email;
 
-    @OneToMany(mappedBy = "borrower")
+    @OneToMany(mappedBy = "borrower",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Book> books;
 
     @Enumerated(EnumType.STRING)
     private Role role; // BORROWER, LIBRARIAN, ADMIN
+
+    public Borrower(Long id) {
+        this.id=id;
+    }
 }

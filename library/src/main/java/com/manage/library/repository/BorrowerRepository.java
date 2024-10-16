@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface BorrowerRepository extends JpaRepository<Borrower,Long> {
 
     Borrower findByUsername(String currentUsername);
+    Borrower findByEmail(String email);
 }
